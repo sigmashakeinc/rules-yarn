@@ -36,20 +36,18 @@ rule ask-yarnrc-plugins {
   enabled true
   priority 85
   severity warning
-  ASK write
+  LOG write
   IF path EQUALS ".yarnrc.yml" AND content CONTAINS "plugins:"
   OR path GLOB "**/.yarnrc.yml" AND content CONTAINS "plugins:"
   MESSAGE "Yarn plugins listed in .yarnrc.yml execute code during yarn operations. A malicious or compromised plugin can intercept installs, intercept publishes, or alter dependency resolution."
-  PROMPT "Is each plugin from a trusted, verified source? Confirm the plugin checksums in .yarnrc.yml match the expected values and the plugin's source is audited."
 }
 
 rule ask-yarn-resolutions {
   enabled true
   priority 80
   severity warning
-  ASK write
+  LOG write
   IF path EQUALS "package.json" AND content CONTAINS "\"resolutions\""
   OR path GLOB "**/package.json" AND content CONTAINS "\"resolutions\""
   MESSAGE "yarn resolutions silently override transitive dependency versions across the entire dependency tree. Incorrect resolutions can mask security vulnerabilities or introduce incompatible versions."
-  PROMPT "Is each resolution intentional and documented? Verify the resolved version is compatible with all packages that depend on it."
 }
